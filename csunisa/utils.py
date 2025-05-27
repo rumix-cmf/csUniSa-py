@@ -12,7 +12,7 @@ def print_result(test_name, passed, error=None):
     else:
         print(f"{test_name:<30} {RED}❌ FAIL{RESET}")
         if error is not None:
-            print(f"Max error: {error:.4f}")
+            print(f"{RED}Max error: {error:.4f}{RESET}")
             # raise AssertionError(f"{test_name} failed.")
 
 
@@ -58,8 +58,7 @@ def plot_solution(t, y, method_name, problem_name, step_size, y_exact=None,
     for i in range(y.shape[1]):
         if y_exact is not None:
             ax.plot(t, y_exact[:, i], label=f"y{i+1} (exact)", linestyle="-")
-        ax.plot(t, y[:, i], "*",
-                label=f"y{i+1} (numerical)")
+        ax.plot(t, y[:, i], "*", label=f"y{i+1} (numerical)")
 
     title = f"{method_name}, {problem_name}, h = {step_size}"
     ax.set_title(title)
