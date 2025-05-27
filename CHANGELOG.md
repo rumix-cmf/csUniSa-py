@@ -6,6 +6,16 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- Midpoint rule (`midpoint`)
+
+### Changed
+
+- Suppressed runtime warnings in all tests
+
 ## [0.1.0] - Initial Python Port
 
 ### Added
