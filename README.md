@@ -1,4 +1,4 @@
-# csunisa
+# csUniSa-py
 
 📘 **csunisa** is a Python package for educational exploration of numerical methods, especially initial value problems (IVPs) and ordinary differential equations (ODEs). It is the Python port of a [MATLAB library](https://github.com/rumix-cmf/csUniSa/tree/main) originally developed for coursework at the University of Salerno.
 
@@ -7,7 +7,7 @@
 ## 📂 Project Structure
 
 ```
-csunisa/
+csUniSa-py/
 ├── csunisa/
 │   ├── __init__.py
 │   ├── odes.py
