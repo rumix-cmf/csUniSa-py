@@ -4,27 +4,6 @@
 
 ---
 
-## 📂 Project Structure
-
-```
-csUniSa-py/
-├── csunisa/
-│   ├── __init__.py
-│   ├── odes.py
-│   ├── plot_utils.py
-│   └── reference_solvers.py  # High-accuracy reference generator
-├── tests/
-│   ├── test_euler.py
-│   ├── ivp_cases.py
-│   └── reference/
-├── run_tests.py
-├── pyproject.toml
-├── README.md
-└── CHANGELOG.md
-```
-
----
-
 ## 🚀 Features
 
 - ⚙️ Numerical solvers

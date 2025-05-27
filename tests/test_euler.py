@@ -1,26 +1,11 @@
 import numpy as np
 from csunisa.odes import euler
 import ivp_cases as ivp
-from csunisa.plot_utils import plot_solution
+from csunisa.utils import print_result, plot_solution
 from scipy.interpolate import interp1d
 import warnings
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
-
-# ANSI colours
-RESET = "[0m"
-GREEN = "[32m"
-RED = "[31m"
-
-
-def print_result(test_name, passed, error=None):
-    if passed:
-        print(f"{test_name:<30} {GREEN}✅ PASS{RESET}")
-    else:
-        print(f"{test_name:<30} {RED}❌ FAIL{RESET}")
-        if error is not None:
-            print(f"{RED}Max error: {error:.4f}{RESET}")
-            # raise AssertionError(f"{test_name} failed.")
 
 
 def test_euler_decay(h):
@@ -38,7 +23,8 @@ def test_euler_brusselator(h):
     f, t_span, y0, t_ref, y_ref = ivp.brusselator()
 
     t, y = euler(f, t_span, y0, h)
-    y_exact = interp1d(t_ref, y_ref, axis=0, kind="linear", fill_value="extrapolate")(t)
+    y_exact = interp1d(t_ref, y_ref, axis=0, kind="linear",
+                       fill_value="extrapolate")(t)
     error = np.abs(y - y_exact)
     passed = np.all(error < 0.05)
     print_result(f"Brusselator, h={h}", passed, error.max())

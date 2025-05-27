@@ -1,5 +1,19 @@
-import matplotlib.pyplot as plt
-import os
+def print_result(test_name, passed, error=None):
+    """
+    Print results for unit tests.
+    """
+    # ANSI colours
+    RESET = "[0m"
+    GREEN = "[32m"
+    RED = "[31m"
+
+    if passed:
+        print(f"{test_name:<30} {GREEN}✅ PASS{RESET}")
+    else:
+        print(f"{test_name:<30} {RED}❌ FAIL{RESET}")
+        if error is not None:
+            print(f"Max error: {error:.4f}")
+            # raise AssertionError(f"{test_name} failed.")
 
 
 def plot_solution(t, y, method_name, problem_name, step_size, y_exact=None,
@@ -31,6 +45,8 @@ def plot_solution(t, y, method_name, problem_name, step_size, y_exact=None,
     fig : matplotlib.figure.Figure
         The figure object for further editing.
     """
+    import os
+    import matplotlib.pyplot as plt
 
     if y_exact is not None:
         if y_exact.ndim == 1:
