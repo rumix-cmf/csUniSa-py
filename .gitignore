@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Pytest cache
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# VSCode settings
+.vscode/
+
+# Python egg metadata and distribution
+*.egg-info/
+dist/
+build/
+
+# Unit test output
+coverage.xml
+htmlcov/
+.tox/
+
+# Zip archives
+*.zip
+
+# Spyder
+.spyproject/
+
+# .npz references
+*.npz
