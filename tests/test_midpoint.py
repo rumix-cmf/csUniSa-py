@@ -1,26 +1,11 @@
 import numpy as np
 from csunisa.odes import midpoint
 import ivp_cases as ivp
-from csunisa.plot_utils import plot_solution
+from csunisa.utils import print_result, plot_solution
 from scipy.interpolate import interp1d
 import warnings
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
-
-# ANSI colours
-RESET = "[0m"
-GREEN = "[32m"
-RED = "[31m"
-
-
-def print_result(test_name, passed, error=None):
-    if passed:
-        print(f"{test_name:<30} {GREEN}✅ PASS{RESET}")
-    else:
-        print(f"{test_name:<30} {RED}❌ FAIL{RESET}")
-        if error is not None:
-            print(f"{RED}Max error: {error:.4f}{RESET}")
-            # raise AssertionError(f"{test_name} failed.")
 
 
 def test_midpoint_decay(h):
