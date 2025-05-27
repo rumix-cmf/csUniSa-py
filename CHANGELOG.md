@@ -6,6 +6,12 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- Removed project structure from `README.md`
+
 ## [0.1.0] - Initial Python Port
 
 ### Added
