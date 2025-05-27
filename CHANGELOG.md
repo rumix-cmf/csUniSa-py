@@ -6,13 +6,19 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [Unreleased]
+## [0.2.0] - New methods and utilities
+
+### Added
+
+- Midpoint rule (`midpoint`)
+- Trapezoid rule (`trapezoid`)
 
 ### Changed
 
+- Suppressed runtime warnings in all tests
 - Removed project structure from `README.md`
 - Utilities are now in a single module `utils.py`
-- print_result always outputs max error, now accordingly coloured
+- `print_result` always outputs max error, now accordingly coloured
 
 ## [0.1.0] - Initial Python Port
 
