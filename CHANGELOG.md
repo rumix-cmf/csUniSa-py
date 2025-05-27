@@ -11,6 +11,7 @@ The format is based on [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Midpoint rule (`midpoint`)
+- Trapezoid rule (`trapezoid`)
 
 ### Changed
 

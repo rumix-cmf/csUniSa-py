@@ -65,7 +65,7 @@ def euler(f, t_span, y0, h):
 
 def midpoint(f, t_span, y0, y1, h):
     """
-    Solve and ODE using the midpoint rule.
+    Solve an ODE using the midpoint rule.
 
     Parameters
     ----------
@@ -95,5 +95,44 @@ def midpoint(f, t_span, y0, y1, h):
 
     for i in range(2, len(t)):
         y[i] = y[i-2] + 2 * h * f(t[i-1], y[i-1])
+
+    return t, y
+
+
+def trapezoid(f, t_span, y0, h):
+    """
+    Solve an ODE using the trapezoid rule.
+
+    Parameters
+    ----------
+    f : callable
+        The ODE system function f(t, y).
+    t_span : tuple of float
+        A tutple (t0, tf) for the time interval.
+    y0 : ndarray
+        Initial condition array.
+    y1 : ndarray
+        Initial condition array.
+    h : float
+        Step size.
+
+    Returns
+    -------
+    t : ndarray
+        Time points.
+    y : ndarray
+        Array of solution values at each time step.
+    """
+    from csunisa.nonlinear import fixed_point_iteration
+
+    t0, tf = t_span
+    t = np.arange(t0, tf + h, h)
+    y = np.zeros((len(t), len(y0)))
+    y[0] = y0
+
+    for i in range(1, len(t)):
+        def g(z):
+            return y[i-1] + 0.5 * h * (f(t[i-1], y[i-1]) + f(t[i], z))
+        y[i], _ = fixed_point_iteration(g, y[i-1])
 
     return t, y
