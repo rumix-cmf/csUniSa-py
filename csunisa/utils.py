@@ -9,11 +9,10 @@ def print_result(test_name, passed, error=None):
 
     if passed:
         print(f"{test_name:<30} {GREEN}✅ PASS{RESET}")
+        print(f"{GREEN}Max error: {error:.4f}{RESET}")
     else:
         print(f"{test_name:<30} {RED}❌ FAIL{RESET}")
-        if error is not None:
-            print(f"{RED}Max error: {error:.4f}{RESET}")
-            # raise AssertionError(f"{test_name} failed.")
+        print(f"{RED}Max error: {error:.4f}{RESET}")
 
 
 def plot_solution(t, y, method_name, problem_name, step_size, y_exact=None,
