@@ -2,29 +2,11 @@
 
 📘 **csunisa** is a Python package for educational exploration of numerical methods, especially initial value problems (IVPs) and ordinary differential equations (ODEs). It is the Python port of a [MATLAB library](https://github.com/rumix-cmf/csUniSa/tree/main) originally developed for coursework at the University of Salerno.
 
----
-
-## 🚀 Features
-
-- ⚙️ Numerical solvers
-- 📦 Modular design: solvers, plotting, IVP definitions
-- ✅ Pretty test output with coloured pass/fail icons
-- 📈 Reusable plotting with automatic labels and titles
-- 🧪 Standalone test scripts — no test framework needed
-- 📐 Reference data generation via `reference_solvers.py`
-
----
 
 ## 📦 Requirements
 
 - Python 3.8 or later
 - Dependencies: `numpy`, `matplotlib`, `scipy`
-
-Install in editable/development mode:
-
-```bash
-pip install -e .
-```
 
 ---
 
@@ -35,18 +17,6 @@ To run all solver tests:
 ```bash
 python run_tests.py
 ```
-
----
-
-## 🛠️ Generating Reference Solutions
-
-Use `make_reference.py` to generate high-accuracy `.npz` files for IVP comparisons:
-
-```bash
-python make_reference.py
-```
-
-You can reuse the logic in `reference_solvers.generate_reference(...)` to build your own test references.
 
 ---
 
