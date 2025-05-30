@@ -99,7 +99,7 @@ def midpoint(f, t_span, y0, y1, h):
     return t, y
 
 
-def trapezoid(f, t_span, y0, h):
+def trapezoid(f, t_span, y0, h, tol=1e-6, max_iter=100):
     """
     Solve an ODE using the trapezoid rule.
 
@@ -115,6 +115,10 @@ def trapezoid(f, t_span, y0, h):
         Initial condition array.
     h : float
         Step size.
+    tol : float, optional
+        Tolerance. The default is 1e-6.
+    max_iter : int, optional
+        Maximum iterations. The default is 100.
 
     Returns
     -------
@@ -133,6 +137,6 @@ def trapezoid(f, t_span, y0, h):
     for i in range(1, len(t)):
         def g(z):
             return y[i-1] + 0.5 * h * (f(t[i-1], y[i-1]) + f(t[i], z))
-        y[i], _ = fixed_point_iteration(g, y[i-1])
+        y[i], _ = fixed_point_iteration(g, y[i-1], tol, max_iter)
 
     return t, y
