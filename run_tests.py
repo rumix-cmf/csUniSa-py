@@ -1,26 +1,26 @@
-import os
-import glob
+import tests.problems as ivps
 
-TEST_DIR = os.path.join(os.path.dirname(__file__), 'tests')
+from csunisa.linear_multistep_method import LinearMultistepMethod
+from csunisa.lmm_registry import get_method, list_methods
+from tests.tester import test_lmm
+
+
+def unit_test_lmms(h=0.05):
+    methods = list_methods()
+
+    for method in methods:
+        data = get_method(method)
+        lmm = LinearMultistepMethod(data["alpha"], data["beta"], method)
+        print(f"🧪 Running: {lmm.name}")
+        print("-" * 50)
+        for pb_function in ivps.problems.values():
+            pb = pb_function()
+            test_lmm(lmm, pb, h)
+        print("\n")
 
 
 def main():
-    test_files = sorted(glob.glob(os.path.join(TEST_DIR, 'test_*.py')))
-    if not test_files:
-        print("No test files found.")
-        return
-
-    print("\n🔍 Running all solver tests\n")
-    print("=" * 40)
-
-    for test_file in test_files:
-        print(f"🧪 Running: {os.path.basename(test_file)}")
-        exit_code = os.system(f"python {test_file}")
-        print("-" * 40)
-        if exit_code != 0:
-            print(f"❌ {os.path.basename(test_file)} failed.\n")
-        else:
-            print(f"✅ {os.path.basename(test_file)} passed.\n")
+    unit_test_lmms()
 
 
 if __name__ == "__main__":

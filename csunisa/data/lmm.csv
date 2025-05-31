@@ -1,0 +1,5 @@
+name,k,alpha,beta
+euler_fw,1,"-1,1","1,0"
+euler_bw,1,"-1,1","0,1"
+trapezoid,1,"-1,1","1/2,1/2"
+midpoint,2,"-1,0,1","0,2,0"

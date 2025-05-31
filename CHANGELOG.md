@@ -6,6 +6,17 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.0.0] - Classes
+
+### Added
+
+- Introduced classes `LinearMultistepMethod` and `InitialValueProblem`
+
+### Changed
+
+- Project structure and code refactored accordingly
+- Unit test framework refactored to accomodate classes and their methods
+
 ## [0.2.0] - New methods and utilities
 
 ### Added

@@ -6,7 +6,7 @@
 ## 📦 Requirements
 
 - Python 3.8 or later
-- Dependencies: `numpy`, `matplotlib`, `scipy`
+- Dependencies: `numpy`, `matplotlib`, `scipy`, `sympy`
 
 ---
 

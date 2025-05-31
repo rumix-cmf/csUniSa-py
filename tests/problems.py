@@ -1,6 +1,7 @@
 import os
 import numpy as np
-from csunisa.reference_solvers import generate_reference
+from tests.reference_solvers import generate_reference
+from csunisa.initial_value_problem import InitialValueProblem
 
 
 def get_reference_path(name):
@@ -15,10 +16,10 @@ def decay():
     t_span = (0, 1)
     y0 = np.array([1])
 
-    def y_exact_fn(t):
+    def y_exact(t):
         return np.exp(-t)
 
-    return f, t_span, y0, y_exact_fn
+    return InitialValueProblem(f, t_span, y0, "decay", y_exact)
 
 
 def brusselator(A=1, B=3):
@@ -37,4 +38,14 @@ def brusselator(A=1, B=3):
     else:
         t_ref, y_ref = generate_reference(f, t_span, y0, save_path=ref_path)
 
-    return f, t_span, y0, t_ref, y_ref
+    ivp = InitialValueProblem(f, t_span, y0, f"Brusselator (A={A}, B={B})")
+    ivp.t_ref = t_ref
+    ivp.y_ref = y_ref
+
+    return ivp
+
+
+problems = {
+    "decay": decay,
+    "brusselator": brusselator
+}
