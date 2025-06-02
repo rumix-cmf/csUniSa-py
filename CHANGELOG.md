@@ -6,6 +6,12 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.1.0] - Stability region plots
+
+### Added
+
+- `scanning` and `boundary_locus` methods for plotting the absolute stability region of linear multistep methods.
+
 ## [1.0.0] - Classes
 
 ### Added

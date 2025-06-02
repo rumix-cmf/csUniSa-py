@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.polynomial import Polynomial
+import matplotlib.pyplot as plt
 from csunisa.nonlinear import fixed_point_iteration
 
 
@@ -47,16 +48,17 @@ class LinearMultistepMethod:
         return Polynomial(self.alpha, symbol="z"), Polynomial(self.beta,
                                                               symbol="z")
 
-    def stability_polynomial(self, hhat):
+    def stability_polynomial(self, hbar):
         """
         Return π(z; h) = ρ(z) - h * σ(z) as a Polynomial.
 
         Parameters
         ----------
-        hhat : float
+        hbar : float
         """
         rho, sigma = self.characteristic_polynomials()
-        return rho - hhat * sigma
+        return rho - hbar * sigma
+
 
     def solve(self, ivp, h, ignition=[], tol=1e-6, max_iter=100):
         """
@@ -116,3 +118,43 @@ class LinearMultistepMethod:
                 y[i], _ = fixed_point_iteration(g, y[i-1], tol, max_iter)
 
         return t, y
+
+    def scanning(self, xs=[-4, 4], ys=[-4, 4], num=100):
+        """
+        Plot the method's absolute stability region by applying the scanning
+        technique to the square xs × ys.
+        """
+
+        plt.xlim(xs)
+        plt.ylim(ys)
+        xs = np.linspace(xs[0], xs[1], num)
+        ys = np.linspace(ys[0], ys[1], num)
+
+        for x in xs:
+            for y in ys:
+                hbar = x + y*1j
+                pi = self.stability_polynomial(hbar)
+                if np.all(np.abs(pi.roots()) < 1 - 1e-10):
+                    plt.plot(x, y, "ks")
+        title = f"{self.name}, num={num}"
+        plt.title(title)
+        plt.grid()
+        plt.show()
+
+    def boundary_locus(self, xs=[-4, 4], ys=[-4, 4], num=50):
+        """
+        Plot the boundary of the method's absolute stability region by applying
+        the boundary locus technique.
+        """
+        plt.xlim(xs)
+        plt.ylim(ys)
+        theta = np.linspace(0, 2*np.pi, num)
+        rho, sigma = self.characteristic_polynomials()
+
+        for t in theta:
+            hbar = rho(np.exp(t*1j)) / sigma(np.exp(t*1j))
+            plt.plot(np.real(hbar), np.imag(hbar), "ks")
+        title = f"{self.name}, num={num}"
+        plt.title(title)
+        plt.grid()
+        plt.show()
