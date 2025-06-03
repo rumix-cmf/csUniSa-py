@@ -11,6 +11,7 @@ The format is based on [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Adams-Bashforth and Adams-Moulton methods, up to four steps
+- BDF methods, up to four steps
 
 ### Changed
 

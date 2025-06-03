@@ -134,7 +134,7 @@ class LinearMultistepMethod:
                 hbar = x + y*1j
                 pi = self.stability_polynomial(hbar)
                 if np.all(np.abs(pi.roots()) < 1 - 1e-10):
-                    plt.plot(x, y, "ks")
+                    plt.plot(x, y, "ms")
         title = f"{self.name}, num={num}"
         plt.title(title)
         plt.grid()
@@ -150,7 +150,7 @@ class LinearMultistepMethod:
 
         for t in theta:
             hbar = rho(np.exp(t*1j)) / sigma(np.exp(t*1j))
-            plt.plot(np.real(hbar), np.imag(hbar), "k+")
+            plt.plot(np.real(hbar), np.imag(hbar), "m+")
         title = f"{self.name}, num={num}"
         if xs is not None:
             plt.xlim(xs)
