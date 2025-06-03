@@ -1,3 +1,5 @@
+import sys
+from math import factorial
 import numpy as np
 from numpy.polynomial import Polynomial
 import matplotlib.pyplot as plt
@@ -16,7 +18,7 @@ class LinearMultistepMethod:
     beta : array_like of float
         Coefficients of the f terms (β₀ to β_k).
     name : str, optional
-        Name or label for the method.
+        Label for identification.
 
     Attributes
     ----------
@@ -28,6 +30,10 @@ class LinearMultistepMethod:
         Number of steps (derived from the length of alpha).
     name : str
         Label for identification.
+    order : int
+        Consinstency order p.
+    error_constant : float
+        The first nonzero C_q constant.
     """
 
     def __init__(self, alpha, beta, name=""):
@@ -35,6 +41,8 @@ class LinearMultistepMethod:
         self.beta = np.array(beta, dtype=float)
         self.k = len(alpha) - 1
         self.name = name or "unnamed LMM"
+        self._order = None
+        self._error_constant = None
 
         # Normalise if αₖ ≠ 1
         if self.alpha[-1] != 1:
@@ -58,6 +66,36 @@ class LinearMultistepMethod:
         """
         rho, sigma = self.characteristic_polynomials()
         return rho - hbar * sigma
+
+    @property
+    def order(self):
+        if self._order is None:
+            self._order = self.compute_order()
+        return self._order
+
+    def compute_order(self):
+        q = 1
+        # Error constant
+        def C(q):
+            return sum(
+                j**q / factorial(q) * self.alpha[j]
+                - j**(q-1) / factorial(q - 1) * self.beta[j]
+                for j in range(0, self.k + 1)
+            )
+
+        constant = C(q)
+        eps = np.finfo(np.float32).eps
+        while np.abs(constant) < eps:
+            q = q+1
+            constant = C(q)
+
+        self._error_constant = constant
+        return q-1
+
+    @property
+    def error_constant(self):
+        if self._error_constant is None:
+            self.compute_order()
 
     def solve(self, ivp, h, ignition=[], tol=1e-6, max_iter=100):
         """

@@ -6,6 +6,12 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [Unreleased] - Predictor-Corrector methods support
+
+## Added
+
+- Methods for computing the order and error constant of a LMM
+
 ## [1.2.1] - AB, AM, BDF
 
 ### Added
