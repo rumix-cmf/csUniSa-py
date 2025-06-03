@@ -5,7 +5,7 @@ from csunisa.lmm_registry import get_method, list_methods
 from tests.tester import test_lmm
 
 
-def unit_test_lmms(h=0.05):
+def unit_test_lmms(h=0.01):
     methods = list_methods()
 
     for method in methods:

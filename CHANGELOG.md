@@ -6,6 +6,16 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- Adams-Bashforth and Adams-Moulton methods, up to four steps
+
+### Changed
+
+- Tester parameters tweaked
+
 ## [1.1.0] - Stability region plots
 
 ### Added
