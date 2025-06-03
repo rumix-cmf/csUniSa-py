@@ -73,7 +73,8 @@ class InitialValueProblem:
         if self.y_exact_fn is not None:
             y_exact = self.y_exact_fn(t)
         elif self.t_ref is not None and self.y_ref is not None:
-            y_exact = interp1d(self.t_ref, self.y_ref, axis=0)(t)
+            y_exact = interp1d(self.t_ref, self.y_ref, axis=0,
+                               fill_value="extrapolate")(t)
         else:
             raise ValueError("No exact/reference solution available.")
         if len(y_exact.shape) == 1:

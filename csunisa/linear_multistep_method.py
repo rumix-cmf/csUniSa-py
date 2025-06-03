@@ -59,7 +59,6 @@ class LinearMultistepMethod:
         rho, sigma = self.characteristic_polynomials()
         return rho - hbar * sigma
 
-
     def solve(self, ivp, h, ignition=[], tol=1e-6, max_iter=100):
         """
         Apply the method to an IVP.
@@ -135,26 +134,28 @@ class LinearMultistepMethod:
                 hbar = x + y*1j
                 pi = self.stability_polynomial(hbar)
                 if np.all(np.abs(pi.roots()) < 1 - 1e-10):
-                    plt.plot(x, y, "ks")
+                    plt.plot(x, y, "ms")
         title = f"{self.name}, num={num}"
         plt.title(title)
         plt.grid()
         plt.show()
 
-    def boundary_locus(self, xs=[-4, 4], ys=[-4, 4], num=50):
+    def boundary_locus(self, xs=None, ys=None, num=50):
         """
         Plot the boundary of the method's absolute stability region by applying
         the boundary locus technique.
         """
-        plt.xlim(xs)
-        plt.ylim(ys)
         theta = np.linspace(0, 2*np.pi, num)
         rho, sigma = self.characteristic_polynomials()
 
         for t in theta:
             hbar = rho(np.exp(t*1j)) / sigma(np.exp(t*1j))
-            plt.plot(np.real(hbar), np.imag(hbar), "ks")
+            plt.plot(np.real(hbar), np.imag(hbar), "m+")
         title = f"{self.name}, num={num}"
+        if xs is not None:
+            plt.xlim(xs)
+        if ys is not None:
+            plt.ylim(ys)
         plt.title(title)
         plt.grid()
         plt.show()

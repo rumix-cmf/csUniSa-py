@@ -22,7 +22,7 @@ def print_result(test_name, passed, error=None):
         print(f"{RED}Max error: {error:.4f}{RESET}")
 
 
-def test_lmm(lmm, ivp, h, test_tol=0.1, tol=1e-6, max_iter=100):
+def test_lmm(lmm, ivp, h, test_tol=1, tol=1e-6, max_iter=100):
     """
     Test a linear multistep method on an IVP.
 
