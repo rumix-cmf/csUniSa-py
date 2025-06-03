@@ -6,7 +6,7 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [Unreleased]
+## [1.2.1] - AB, AM, BDF
 
 ### Added
 
