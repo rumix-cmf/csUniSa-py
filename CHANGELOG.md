@@ -16,6 +16,7 @@ The format is based on [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Tester parameters tweaked
+- Tester `print_result` output format to .2e
 
 ## [1.1.0] - Stability region plots
 
