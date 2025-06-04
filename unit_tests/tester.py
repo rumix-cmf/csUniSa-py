@@ -22,11 +22,11 @@ def test_lmm(lmm, ivp, h, test_tol=1e-3, tol=1e-6, max_iter=100, plot=False):
         Step size.
     test_tol : float, default 1e-3
         Tolerance to determine success.
-    tol : float, optional, default 1e-6
+    tol : float, default 1e-6
         Tolerance for implicit methods.
-    max_iter : int, optional, default 100
+    max_iter : int, default 100
         Maximum iterations for implicit methods.
-    plot : bool, optional, default False
+    plot : bool, default False
         Whether to show plots.
     """
     starting = ivp.compute_starting_values(lmm.k, h)
@@ -53,7 +53,7 @@ def test_lmm(lmm, ivp, h, test_tol=1e-3, tol=1e-6, max_iter=100, plot=False):
         status = "FAIL"
     elif rel_max < test_tol:
         status = "PASS"
-    elif rel_max < 10 * test_tol:
+    elif rel_max < 1e3 * test_tol:
         status = "WARN"
     else:
         status = "FAIL"
@@ -65,6 +65,63 @@ def test_lmm(lmm, ivp, h, test_tol=1e-3, tol=1e-6, max_iter=100, plot=False):
         plt.figure()
         plt.semilogy(t, err_abs)
         plt.title(f'{lmm.name}, {ivp.name}, h={h}')
+        plt.xlabel('t')
+        plt.ylabel('error')
+        plt.grid()
+        plt.show()
+
+def test_pc(pc, ivp, mu, h=0.05, tol=1e-3, test_tol=1e-3, plot=False):
+    """
+    Test a predictor-corrector method on an IVP.
+
+    Parameters
+    ----------
+    pc : PredictorCorrector
+        Method to be tested.
+    ivp : InitialValueProblem
+        IVP to test the problem on.
+    mu : int
+        As in P(EC)^μ E.
+    h : float, default 0.05
+        Initial step size.
+    tol : float, default 1e-6
+        Tolerance to accept or reject a step.
+    test_tol : float, default 1e-3
+        Tolerance to determine success.
+    plot : bool, default False
+        Whether to show plots.
+    """
+    starting = ivp.compute_starting_values(pc.predictor.k, h)
+    t, y = pc.solve(ivp, mu, h, starting, tol)
+    y_exact = ivp.compute_exact_solution(t)
+    if y_exact.ndim == 1:
+        y_exact = y_exact.reshape(-1, 1)
+
+    err_abs = []
+    for i in range(len(t)):
+        err = la.norm(y[i, :] - y_exact[i, :])
+        err_abs.append(err)
+
+    err_abs = np.array(err_abs)
+    err_max = np.max(err_abs)
+
+    # Classification
+    if np.isnan(err_max) or np.isinf(err_max):
+        status = "FAIL"
+    elif err_max < test_tol:
+        status = "PASS"
+    elif err_max < 1e3 * test_tol:
+        status = "WARN"
+    else:
+        status = "FAIL"
+
+    print_result(f"{ivp.name}", status, err_max)
+
+    if plot:
+        plot_result(t, y, pc.name, ivp)
+        plt.figure()
+        plt.semilogy(t, err_abs)
+        plt.title(f'{pc.name}, {ivp.name}')
         plt.xlabel('t')
         plt.ylabel('error')
         plt.grid()

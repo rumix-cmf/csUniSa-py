@@ -44,25 +44,20 @@ class PredictorCorrector:
     def solve(self, ivp, mu, h=0.05, starting=[], tol=1e-3):
         """
         Apply the method to an IVP. Uses Milne's estimate to compute the step
-        size at each iteration. Requires predictor and corrector to have the
-        same order.
+        size at each iteration. It is necessary that p* ≥ p, or p* + μ > p.
 
         Parameters
         ----------
         ivp : InitialValueProblem
-        h : float, default 0.05
-            Initial step size.
         mu : int
             As in P(EC)^μ E.
-        tol : float, default 1e-6
-            Tolerance to accept or reject a step.
+        h : float, default 0.05
+            Initial step size.
         starting : ndarray (k-1, len(y0)), optional
             Starting values for multistep methods.
+        tol : float, default 1e-3
+            Tolerance to accept or reject a step.
         """
-        if self.predictor.order != self.corrector.order:
-            raise ValueError(f"Predictor order p*={self.predictor.order} "
-                             "differs from corrector order p="
-                             f"{self.corrector.order}")
 
         t0, tf = ivp.t_span
         t = [t0]
@@ -70,7 +65,7 @@ class PredictorCorrector:
         y[0] = ivp.y0
 
         # Additional starting values
-        if starting == []:
+        if len(starting) == 0:
             if self.k > 1:
                 raise ValueError(f"{self.k}-step method needs {self.k-1} "
                                  "additional starting values (got 0)")

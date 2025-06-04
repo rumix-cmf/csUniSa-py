@@ -43,34 +43,3 @@ def plot_result(t, y, method_name, ivp, h=None):
     fig.tight_layout()
 
     return fig, ax
-
-
-def plot_error_plte(t, error, plte, method_name, ivp):
-    """
-    Plot the estimated plte and the actual error.
-
-    Parameters
-    ----------
-    t : ndarray
-        Time values.
-    error : ndarray
-        Error's norm.
-    plte : ndarray
-        Norm of estimated plte.
-    method_name : str
-        Name of the method used.
-    ivp : InitialValueProblem
-        Test problem
-    """
-    fig, ax = plt.subplots()
-    ax.semilogy(t, plte, label='estimate', linestyle='--', c='grey')
-    ax.semilogy(t, error, label='actual')
-    title = f"{method_name}, {ivp.name}"
-    ax.set_title(title)
-    ax.set_xlabel("t")
-    ax.set_ylabel("error")
-    ax.grid()
-    ax.legend()
-    fig.tight_layout()
-
-    return fig, ax

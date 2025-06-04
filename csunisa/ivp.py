@@ -65,6 +65,8 @@ class InitialValueProblem:
         starting: ndarray (k-1, len(y0))
             Starting values y₁,...,y_k.
         """
+        if k == 1:
+            return []
         t0, tf = self.t_span
         t = np.arange(t0, tf + h, h)
         starting = np.zeros((k-1, len(self.y0)))
@@ -131,7 +133,7 @@ class InitialValueProblem:
         
         fig, ax = plt.subplots()
         for i in range(y.shape[1]):
-            ax.plot(t, y[:, i], label=f"y{i+1} (exact)", linestyle="--",
+            ax.plot(t, y[:, i], linestyle="--",
                     c='grey')
 
         return fig, ax

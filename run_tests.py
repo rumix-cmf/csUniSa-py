@@ -13,7 +13,7 @@ def unit_test_lmms(h=0.01):
         lmm = LinearMultistepMethod(data["alpha"], data["beta"], method)
         print(f"🧪 Running: {lmm.name}")
         print("-" * 50)
-        for pb_function in ivps.problems.values():
+        for pb_function in ivps.lmm_problems.values():
             pb = pb_function()
             test_lmm(lmm, pb, h)
         print("\n")

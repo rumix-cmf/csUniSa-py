@@ -127,7 +127,11 @@ class LinearMultistepMethod:
         y[0] = ivp.y0
 
         # Additional starting values
-        if starting.shape != (self.k-1, len(ivp.y0)):
+        if len(starting) == 0:
+            if self.k > 1:
+                raise ValueError(f"{self.k}-step method needs {self.k-1} "
+                                 "additional starting values (got 0)")
+        elif starting.shape != (self.k-1, len(ivp.y0)):
             raise ValueError(f"{self.k}-step method needs {self.k-1} "
                              "additional starting values "
                              f"(got {starting.shape[0]})")

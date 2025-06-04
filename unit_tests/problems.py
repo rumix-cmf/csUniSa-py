@@ -45,7 +45,7 @@ def brusselator(A=1, B=3):
     return ivp
 
 
-problems = {
+lmm_problems = {
     "decay": decay,
     "brusselator": brusselator
 }
