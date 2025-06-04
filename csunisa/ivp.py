@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
 
 
 class InitialValueProblem:
@@ -84,3 +85,30 @@ class InitialValueProblem:
             starting[i-1] = y_exact[i]
 
         return starting, y_exact
+
+    def plot_solution(self):
+        """
+        Plot exact or reference solution.
+
+        Returns
+        -------
+        fig, ax
+        """
+        if self.y_exact_fn is not None:
+            t0, tf = self.t_span
+            t = np.linspace(t0, tf, 100)
+            y = self.y_exact_fn(t)
+        elif self.t_ref is not None and self.y_ref is not None:
+            t, y = self.t_ref, self.y_ref
+        else:
+            raise ValueError("No exact nor reference solution available.")
+        
+        if y.ndim == 1:
+            y = y.reshape(-1, 1)
+        
+        fig, ax = plt.subplots()
+        for i in range(y.shape[1]):
+            ax.plot(t, y[:, i], label=f"y{i+1} (exact)", linestyle="--",
+                    c='grey')
+
+        return fig, ax

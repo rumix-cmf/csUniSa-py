@@ -49,5 +49,8 @@ def generate_reference(f, t_span, y0, h=0.001, method="RK45", rtol=1e-10,
 
     if save_path:
         np.savez(save_path, t=t, y=y)
+    # if save_path:
+    #     os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    #     fig.savefig(save_path)
 
     return t, y

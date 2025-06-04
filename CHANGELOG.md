@@ -8,10 +8,14 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased] - Predictor-Corrector methods support
 
-## Added
+### Added
 
 - Predictor-Corrector method support with new class
 - Order and error constant attributes for LMMs, method for computation
+
+### Changed
+
+- Plotting utilities reworked
 
 ## [1.2.1] - AB, AM, BDF
 

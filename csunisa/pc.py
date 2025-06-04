@@ -1,5 +1,5 @@
 import numpy as np
-from numpy import linalg as LA
+from numpy import linalg as la
 
 
 class PredictorCorrector:
@@ -111,7 +111,7 @@ class PredictorCorrector:
                 y_pred = y_corr
 
             # Accept the current iteration, or try again with new step
-            plte_new = LA.norm(self.w * (y_corr - y0))
+            plte_new = la.norm(self.w * (y_corr - y0))
             if plte_new < tol:
                 print(f"({len(t)}) Step h={h} accepted after {step_iterations} "
                       "iterations")
@@ -131,4 +131,4 @@ class PredictorCorrector:
                     0.9 * (tol / plte_new)**(1 / (self.corrector.order + 1))
                 )
             )
-        return t, y, plte
+        return np.array(t), y, np.array(plte)
