@@ -67,37 +67,38 @@ class LinearMultistepMethod:
         rho, sigma = self.characteristic_polynomials()
         return rho - hbar * sigma
 
-    @property
-    def order(self):
-        if self._order is None:
-            self._order = self.compute_order()
-        return self._order
-
-    def compute_order(self):
+    def _compute_order_and_error(self):
         q = 1
-        # Error constant
+
         def C(q):
             return sum(
                 j**q / factorial(q) * self.alpha[j]
-                - j**(q-1) / factorial(q - 1) * self.beta[j]
-                for j in range(0, self.k + 1)
+                - j**(q - 1) / factorial(q - 1) * self.beta[j]
+                for j in range(self.k + 1)
             )
 
-        constant = C(q)
         eps = np.finfo(np.float32).eps
-        while np.abs(constant) < eps:
-            q = q+1
+        constant = C(q)
+        while abs(constant) < eps:
+            q += 1
             constant = C(q)
 
+        self._order = q - 1
         self._error_constant = constant
-        return q-1
+
+    @property
+    def order(self):
+        if self._order is None:
+            self._compute_order_and_error()
+        return self._order
 
     @property
     def error_constant(self):
         if self._error_constant is None:
-            self.compute_order()
+            self._compute_order_and_error()
+        return self._error_constant
 
-    def solve(self, ivp, h, ignition=[], tol=1e-6, max_iter=100):
+    def solve(self, ivp, h, starting=[], tol=1e-6, max_iter=100):
         """
         Apply the method to an IVP.
 
@@ -106,8 +107,8 @@ class LinearMultistepMethod:
         ivp : InitialValueProblem
         h : float
             Step size.
-        ignition: ndarray (k-1, len(y0)), optional
-            Ignition values for multistep methods.
+        starting: ndarray (k-1, len(y0)), optional
+            Starting values for multistep methods.
         tol : float, default 1e-6
             Tolerance for implicit methods.
         max_iter : int, default 100
@@ -120,26 +121,25 @@ class LinearMultistepMethod:
         y : ndarray (len(t), len(y0))
             Array of solution values at each time step.
         """
-        f = ivp.f
         t0, tf = ivp.t_span
         t = np.arange(t0, tf + h, h)
         y = np.zeros((len(t), len(ivp.y0)))
         y[0] = ivp.y0
 
-        # Additional ignition values
-        if ignition.shape != (self.k-1, len(ivp.y0)):
+        # Additional starting values
+        if starting.shape != (self.k-1, len(ivp.y0)):
             raise ValueError(f"{self.k}-step method needs {self.k-1} "
-                             "additional ignition values "
-                             f"(got {ignition.shape[0]})")
+                             "additional starting values "
+                             f"(got {starting.shape[0]})")
         for i in range(1, self.k):
-            y[i] = ignition[i-1]
+            y[i] = starting[i-1]
 
         # Main loop for explicit methods
         if self.beta[-1] == 0:
             for i in range(self.k, len(t)):
                 y[i] = sum(
                     -self.alpha[j] * y[i-self.k+j]
-                    + h * self.beta[j] * f(t[i-self.k+j], y[i-self.k+j])
+                    + h * self.beta[j] * ivp.f(t[i-self.k+j], y[i-self.k+j])
                     for j in range(0, self.k)
                 )
         # Main loop for implicit methods
@@ -147,10 +147,10 @@ class LinearMultistepMethod:
             for i in range(self.k, len(t)):
                 def g(z):
                     return sum(
-                        -self.alpha[j] * y[i-self.k+j]
-                        + h * self.beta[j] * f(t[i-self.k+j], y[i-self.k+j])
+                        - self.alpha[j] * y[i-self.k+j]
+                        + h * self.beta[j] * ivp.f(t[i-self.k+j], y[i-self.k+j])
                         for j in range(0, self.k)
-                    ) + h * self.beta[self.k] * f(t[i], z)
+                    ) + h * self.beta[self.k] * ivp.f(t[i], z)
 
                 y[i], _ = fixed_point_iteration(g, y[i-1], tol, max_iter)
 

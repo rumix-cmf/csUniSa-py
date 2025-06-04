@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from tests.reference_solvers import generate_reference
-from csunisa.initial_value_problem import InitialValueProblem
+from csunisa.ivp import InitialValueProblem
 
 
 def get_reference_path(name):

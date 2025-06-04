@@ -10,7 +10,8 @@ The format is based on [Semantic Versioning](https://semver.org/).
 
 ## Added
 
-- Methods for computing the order and error constant of a LMM
+- Predictor-Corrector method support with new class
+- Order and error constant attributes for LMMs, method for computation
 
 ## [1.2.1] - AB, AM, BDF
 

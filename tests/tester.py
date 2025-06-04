@@ -41,8 +41,8 @@ def test_lmm(lmm, ivp, h, test_tol=1, tol=1e-6, max_iter=100):
     max_iter : int, optional, default 100
         Maximum iterations for implicit methods.
     """
-    ignition, y_exact = ivp.compute_ignition_values(lmm.k, h)
-    t, y = lmm.solve(ivp, h, ignition=ignition, tol=tol, max_iter=max_iter)
+    starting, y_exact = ivp.compute_starting_values(lmm.k, h)
+    t, y = lmm.solve(ivp, h, starting=starting, tol=tol, max_iter=max_iter)
     error = np.abs(y - y_exact)
     passed = np.all(error < test_tol)
     print_result(f"{ivp.name}, h={h}", passed, error.max())

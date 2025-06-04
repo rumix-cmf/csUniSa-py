@@ -47,9 +47,9 @@ class InitialValueProblem:
         self.name = name or "unnamed IVP"
         self.y_exact_fn = y_exact_fn
 
-    def compute_ignition_values(self, k, h):
+    def compute_starting_values(self, k, h):
         """
-        Compute the additional ignition values required by a multistep method.
+        Compute the additional starting values required by a multistep method.
         Requires an exact solution or a reference solution.
 
         Parameters
@@ -62,13 +62,13 @@ class InitialValueProblem:
         Returns
         -------
         ingition: ndarray (k-1, len(y0))
-            Ignition values y₁,...,y_k.
+            Starting values y₁,...,y_k.
         y_exact : ndarray (len(t), len(y0))
             Useful byproduct.
         """
         t0, tf = self.t_span
         t = np.arange(t0, tf + h, h)
-        ignition = np.zeros((k-1, len(self.y0)))
+        starting = np.zeros((k-1, len(self.y0)))
 
         if self.y_exact_fn is not None:
             y_exact = self.y_exact_fn(t)
@@ -81,6 +81,6 @@ class InitialValueProblem:
             y_exact = y_exact.reshape((len(y_exact), 1))
 
         for i in range(1, k):
-            ignition[i-1] = y_exact[i]
+            starting[i-1] = y_exact[i]
 
-        return ignition, y_exact
+        return starting, y_exact

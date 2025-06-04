@@ -1,6 +1,6 @@
 import tests.problems as ivps
 
-from csunisa.linear_multistep_method import LinearMultistepMethod
+from csunisa.lmm import LinearMultistepMethod
 from csunisa.lmm_registry import get_method, list_methods
 from tests.tester import test_lmm
 
