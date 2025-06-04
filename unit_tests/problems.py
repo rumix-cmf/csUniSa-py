@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from tests.reference_solvers import generate_reference
+from unit_tests.reference_solvers import generate_reference
 from csunisa.ivp import InitialValueProblem
 
 

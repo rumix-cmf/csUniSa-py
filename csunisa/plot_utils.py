@@ -29,7 +29,7 @@ def plot_result(t, y, method_name, ivp, h=None):
     for i in range(y.shape[1]):
         ax.plot(t, y[:, i], marker="o", mfc="none", linewidth=0.5,
                 label=f"y{i+1} (numerical)")
-    
+
     if h is not None:
         h = f", h={h}"
     else:

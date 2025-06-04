@@ -161,7 +161,6 @@ class LinearMultistepMethod:
         Plot the method's absolute stability region by applying the scanning
         technique to the square xs × ys.
         """
-
         plt.xlim(xs)
         plt.ylim(ys)
         xs = np.linspace(xs[0], xs[1], num)

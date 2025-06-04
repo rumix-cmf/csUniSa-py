@@ -62,10 +62,8 @@ class InitialValueProblem:
 
         Returns
         -------
-        ingition: ndarray (k-1, len(y0))
+        starting: ndarray (k-1, len(y0))
             Starting values y₁,...,y_k.
-        y_exact : ndarray (len(t), len(y0))
-            Useful byproduct.
         """
         t0, tf = self.t_span
         t = np.arange(t0, tf + h, h)
@@ -84,7 +82,32 @@ class InitialValueProblem:
         for i in range(1, k):
             starting[i-1] = y_exact[i]
 
-        return starting, y_exact
+        return starting
+    
+    def compute_exact_solution(self, t):
+        """
+        Compute the exact solution over time points t by either applying the
+        exact solution function or interpolating the reference solution.
+
+        Parameters
+        ----------
+        t : ndarray
+            Time points.
+
+        Returns
+        -------
+        y_exact : ndarray (len(t), len(y0))
+        """
+        if self.y_exact_fn is not None:
+            y_exact = self.y_exact_fn(t)
+        elif self.t_ref is not None and self.y_ref is not None:
+            y_exact = interp1d(self.t_ref, self.y_ref, axis=0,
+                               fill_value="extrapolate")(t)
+        else:
+            raise ValueError("No exact/reference solution available.")
+        
+        return y_exact
+
 
     def plot_solution(self):
         """

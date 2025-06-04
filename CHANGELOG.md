@@ -16,6 +16,7 @@ The format is based on [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Plotting utilities reworked
+- LMM tests reworked
 
 ## [1.2.1] - AB, AM, BDF
 

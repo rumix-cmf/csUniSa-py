@@ -67,9 +67,7 @@ class PredictorCorrector:
         t0, tf = ivp.t_span
         t = [t0]
         y = np.zeros((self.k, len(ivp.y0)))
-        plte = [0]
         y[0] = ivp.y0
-        step_iterations = 1
 
         # Additional starting values
         if starting == []:
@@ -83,7 +81,6 @@ class PredictorCorrector:
         for i in range(1, self.k):
             y[i] = starting[i-1]
             t.append(t[-1] + h)
-            plte[i] = 0
 
         # Main loop
         while t[-1] < tf:
@@ -111,24 +108,15 @@ class PredictorCorrector:
                 y_pred = y_corr
 
             # Accept the current iteration, or try again with new step
-            plte_new = la.norm(self.w * (y_corr - y0))
-            if plte_new < tol:
-                print(f"({len(t)}) Step h={h} accepted after {step_iterations} "
-                      "iterations")
-                step_iterations = 1
+            plte = la.norm(self.w * (y_corr - y0))
+            if plte < tol:
                 t.append(t[-1] + h)
                 y = np.vstack((y, y_corr))
-                plte.append(plte_new)
                 facma = 1.5
             else:
-                step_iterations += 1
                 facma = 1.
 
-            h *= min(
-                facma,
-                max(
-                    0.5,
-                    0.9 * (tol / plte_new)**(1 / (self.corrector.order + 1))
-                )
-            )
-        return np.array(t), y, np.array(plte)
+            h *= min(facma, max(
+                0.05, 0.9 * (tol / plte)**(1 / (self.corrector.order + 1))
+            ))
+        return np.array(t), y
