@@ -2,15 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Semantic Versioning](https://semver.org/).
-
 ---
 
-## [Unreleased] - Predictor-Corrector methods support
+## [2.0.0] - Predictor-corrector methods support
 
 ### Added
 
-- Predictor-Corrector method support with new class
+- Predictor-corrector method support with new class
 - Order and error constant attributes for LMMs, method for computation
 
 ### Changed

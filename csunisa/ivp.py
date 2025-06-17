@@ -133,7 +133,6 @@ class InitialValueProblem:
         
         fig, ax = plt.subplots()
         for i in range(y.shape[1]):
-            ax.plot(t, y[:, i], linestyle="--",
-                    c='grey')
+            ax.plot(t, y[:, i], linestyle="--", c='grey')
 
         return fig, ax
