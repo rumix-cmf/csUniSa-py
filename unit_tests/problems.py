@@ -1,7 +1,7 @@
 import os
 import numpy as np
-from tests.reference_solvers import generate_reference
-from csunisa.initial_value_problem import InitialValueProblem
+from unit_tests.reference_solvers import generate_reference
+from csunisa.ivp import InitialValueProblem
 
 
 def get_reference_path(name):
@@ -45,7 +45,7 @@ def brusselator(A=1, B=3):
     return ivp
 
 
-problems = {
+lmm_problems = {
     "decay": decay,
     "brusselator": brusselator
 }

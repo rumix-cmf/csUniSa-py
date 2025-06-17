@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
 
 
 class InitialValueProblem:
@@ -47,9 +48,9 @@ class InitialValueProblem:
         self.name = name or "unnamed IVP"
         self.y_exact_fn = y_exact_fn
 
-    def compute_ignition_values(self, k, h):
+    def compute_starting_values(self, k, h):
         """
-        Compute the additional ignition values required by a multistep method.
+        Compute the additional starting values required by a multistep method.
         Requires an exact solution or a reference solution.
 
         Parameters
@@ -61,14 +62,14 @@ class InitialValueProblem:
 
         Returns
         -------
-        ingition: ndarray (k-1, len(y0))
-            Ignition values y₁,...,y_k.
-        y_exact : ndarray (len(t), len(y0))
-            Useful byproduct.
+        starting: ndarray (k-1, len(y0))
+            Starting values y₁,...,y_k.
         """
+        if k == 1:
+            return []
         t0, tf = self.t_span
         t = np.arange(t0, tf + h, h)
-        ignition = np.zeros((k-1, len(self.y0)))
+        starting = np.zeros((k-1, len(self.y0)))
 
         if self.y_exact_fn is not None:
             y_exact = self.y_exact_fn(t)
@@ -81,6 +82,57 @@ class InitialValueProblem:
             y_exact = y_exact.reshape((len(y_exact), 1))
 
         for i in range(1, k):
-            ignition[i-1] = y_exact[i]
+            starting[i-1] = y_exact[i]
 
-        return ignition, y_exact
+        return starting
+    
+    def compute_exact_solution(self, t):
+        """
+        Compute the exact solution over time points t by either applying the
+        exact solution function or interpolating the reference solution.
+
+        Parameters
+        ----------
+        t : ndarray
+            Time points.
+
+        Returns
+        -------
+        y_exact : ndarray (len(t), len(y0))
+        """
+        if self.y_exact_fn is not None:
+            y_exact = self.y_exact_fn(t)
+        elif self.t_ref is not None and self.y_ref is not None:
+            y_exact = interp1d(self.t_ref, self.y_ref, axis=0,
+                               fill_value="extrapolate")(t)
+        else:
+            raise ValueError("No exact/reference solution available.")
+        
+        return y_exact
+
+
+    def plot_solution(self):
+        """
+        Plot exact or reference solution.
+
+        Returns
+        -------
+        fig, ax
+        """
+        if self.y_exact_fn is not None:
+            t0, tf = self.t_span
+            t = np.linspace(t0, tf, 100)
+            y = self.y_exact_fn(t)
+        elif self.t_ref is not None and self.y_ref is not None:
+            t, y = self.t_ref, self.y_ref
+        else:
+            raise ValueError("No exact nor reference solution available.")
+        
+        if y.ndim == 1:
+            y = y.reshape(-1, 1)
+        
+        fig, ax = plt.subplots()
+        for i in range(y.shape[1]):
+            ax.plot(t, y[:, i], linestyle="--", c='grey')
+
+        return fig, ax

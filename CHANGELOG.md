@@ -2,9 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Semantic Versioning](https://semver.org/).
-
 ---
+
+## [2.0.0] - Predictor-corrector methods support
+
+### Added
+
+- Predictor-corrector method support with new class
+- Order and error constant attributes for LMMs, method for computation
+
+### Changed
+
+- Plotting utilities reworked
+- LMM tests reworked
 
 ## [1.2.1] - AB, AM, BDF
 
