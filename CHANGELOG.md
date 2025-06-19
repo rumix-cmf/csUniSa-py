@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - Runge-Kutta methods support
+
+- Runge-Kutta method support with new class
+
 ## [2.0.0] - Predictor-corrector methods support
 
 ### Added
