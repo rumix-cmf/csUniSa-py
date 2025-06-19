@@ -57,6 +57,13 @@ class PredictorCorrector:
             Starting values for multistep methods.
         tol : float, default 1e-3
             Tolerance to accept or reject a step.
+
+        Returns
+        -------
+        t : ndarray
+            Time points.
+        y : ndarray (len(t), len(y0))
+            Array of solution values at each time step.
         """
 
         t0, tf = ivp.t_span
@@ -102,16 +109,17 @@ class PredictorCorrector:
                 ) + h * self.corrector.beta[self.k] * f_pred
                 y_pred = y_corr
 
-            # Accept the current iteration, or try again with new step
+            # Accept current iteration, or try again with new step
             plte = la.norm(self.w * (y_corr - y0))
             if plte < tol:
                 t.append(t[-1] + h)
                 y = np.vstack((y, y_corr))
                 facma = 1.5
             else:
-                facma = 1.
+                facma = 1
 
             h *= min(facma, max(
                 0.05, 0.9 * (tol / plte)**(1 / (self.corrector.order + 1))
             ))
+
         return np.array(t), y
